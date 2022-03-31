@@ -7,7 +7,7 @@ def compute_action(ws, obs) -> int:
     # return 1 if jump
     return 0
 
-def play_one_game(ws, render=False) -> int: # ws -> a, b, c
+def play_one_game(ws, render=False, max_frame = 1000) -> int: # ws -> a, b, c
     obs = env.reset()
     i_frame = 0
     while True:
@@ -25,6 +25,9 @@ def play_one_game(ws, render=False) -> int: # ws -> a, b, c
 
         # Checking if the player is still alive
         if done:
+            break
+
+        if i_frame > max_frame:
             break
         i_frame += 1
     return i_frame
