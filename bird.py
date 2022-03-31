@@ -14,7 +14,6 @@ def compute_action(ws, obs) -> int:
 
 def play_one_game(ws, render=False, max_frame=1000) -> int:  # ws -> a, b, c
     env = flappy_bird_gym.make("FlappyBird-v0")
-    env.seed(100)
     obs = env.reset()
 
     i_frame = 0
@@ -29,7 +28,7 @@ def play_one_game(ws, render=False, max_frame=1000) -> int:  # ws -> a, b, c
         # (remove this two lines during training)
         if render:
             env.render()
-            time.sleep(1 / 30)  # FPS
+            time.sleep(1 / 60)  # FPS
 
         # Checking if the player is still alive
         if done:
@@ -49,7 +48,7 @@ def random_bird():
 def squid_games(birds):
     tmp = []
     for bird in birds:
-        score = play_one_game(bird, max_frame=2000)
+        score = play_one_game(bird, max_frame=5000)
         tmp.append((score, bird))
     tmp = sorted(tmp, key=lambda x: -x[0])
     for x in tmp[:10]:
@@ -71,7 +70,7 @@ def random_breed(birds):
 def find_super_bird():
     birds = [random_bird() for _ in range(200)]
     strong_ones = squid_games(birds)
-    for gen in range(20):
+    for gen in range(30):
         print('-' * 30, gen)
         children = [random_breed(strong_ones) for i in range(150)]
         jj = [random_bird() for _ in range(30)]
@@ -82,6 +81,9 @@ def find_super_bird():
 super_bird = find_super_bird()
 print(super_bird)
 
-score = play_one_game(super_bird,
+score = play_one_game(super_bird[0],
                       render=True, max_frame=999999)
+
+# score = play_one_game([ -22.05717347,   21.23837877, -552.75222079],
+#                       render=True, max_frame=999999)
 print(score)
