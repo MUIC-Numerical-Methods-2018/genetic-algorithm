@@ -1,0 +1,1 @@
+```pip install git+https://github.com/MUIC-Numerical-Methods-2018/flappy-bird-gym.git```
