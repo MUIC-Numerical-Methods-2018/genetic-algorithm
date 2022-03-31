@@ -13,13 +13,10 @@ def play_one_game(ws, render=False) -> int: # ws -> a, b, c
     while True:
         # Next action:
         # (feed the observation to your agent here)
-        # 0 no press
-        # 1 press the space bar
         action = compute_action(ws, obs)  # for a random action
 
         # Processing:
         obs, reward, done, info = env.step(action)
-        print(obs)
         # Rendering the game:
         # (remove this two lines during training)
         if render:
@@ -31,3 +28,13 @@ def play_one_game(ws, render=False) -> int: # ws -> a, b, c
             break
         i_frame += 1
     return i_frame
+
+
+def find_super_bird():
+    # buy tons of birds from JJ
+    # strong_ones = one that survive the squid game
+    for gen in range(20):
+        pass
+        # birds = strong_ones + children of strong_ones + some from JJ
+        # strong_ones = squid game on birds
+    # super_bird = strongest one from strong_ones
