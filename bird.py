@@ -15,6 +15,7 @@ class Bird:
 # karan = Bird([5, 8, 2])
 
 def play_one_game(bird: Bird) -> int:
+    env.seed(555)
     obs = env.reset()
     score = 0
     while True:
@@ -25,7 +26,6 @@ def play_one_game(bird: Bird) -> int:
 
         # Processing:
         obs, reward, done, info = env.step(action)
-        print(obs, action)
 
         # Rendering the game:
         # (remove this two lines during training)
@@ -44,9 +44,37 @@ def random_bird():
     return Bird((np.random.random(3)-0.5)*2000)
 
 def squid_game():
-    birds = [random_bird() for _ in range(2000)]
+    birds = [random_bird() for _ in range(10000)]
     scores = [play_one_game(bird) for bird in birds]
     best_bird = np.argmax(scores)
     print(birds[best_bird], scores[best_bird])
+
+def breed(male_bird: Bird, female_bird: Bird) -> Bird:
+    return Bird((male_bird.w + female_bird.w)/2)
+
+def gamma_ray_radition(bird: Bird) -> Bird:
+    return Bird(bird.w + np.random.randn(3)*5)
+
+from typing import List
+
+def new_bird_generation(winning_birds: List[Bird]) -> List[Bird]:
+    # 10000
+    # winning_bird --> 1000
+    # winning_bird + radiation --> 1000
+    # breed some more + radiation --> 7000
+    # totally new ---> 1000
+    winning_bird_radiation = [gamma_ray_radition(bird) for bird in winning_birds]
+
+    def random_children():
+        b1, b2 = np.random.choice(winning_birds, 2)
+        return breed(b1, b2)
+    
+    child_birds = [gamma_ray_radition(random_children()) for _ in range(7000)]
+    new_birds = [random_bird() for _ in range(1000)]
+
+    return winning_birds + winning_bird_radiation + child_birds + new_birds
+
+
+
 
 squid_game()
