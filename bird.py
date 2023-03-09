@@ -43,8 +43,7 @@ def play_one_game(bird: Bird) -> int:
 def random_bird():
     return Bird((np.random.random(3)-0.5)*2000)
 
-def squid_game() -> List[Bird]:
-    birds = [random_bird() for _ in range(10000)]
+def squid_game(birds: List[Bird]) -> List[Bird]:
     scores = [play_one_game(bird) for bird in birds]
     best_bird = np.argmax(scores)
     print(birds[best_bird], scores[best_bird])
