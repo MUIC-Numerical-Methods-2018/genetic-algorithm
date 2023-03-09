@@ -43,11 +43,12 @@ def play_one_game(bird: Bird) -> int:
 def random_bird():
     return Bird((np.random.random(3)-0.5)*2000)
 
-def squid_game():
+def squid_game() -> List[Bird]:
     birds = [random_bird() for _ in range(10000)]
     scores = [play_one_game(bird) for bird in birds]
     best_bird = np.argmax(scores)
     print(birds[best_bird], scores[best_bird])
+    return get_winning_birds(birds, scores)
 
 def breed(male_bird: Bird, female_bird: Bird) -> Bird:
     return Bird((male_bird.w + female_bird.w)/2)
@@ -74,7 +75,10 @@ def new_bird_generation(winning_birds: List[Bird]) -> List[Bird]:
 
     return winning_birds + winning_bird_radiation + child_birds + new_birds
 
-
+def get_winning_birds(birds: List[Bird], scores: np.ndarray) -> List[Bird]: 
+    bs = [(b, s) for b, s in zip(birds, scores)]
+    bs.sort(key=lambda x: x[1], reverse=True) # sort score descendingly
+    return bs[: 1000]
 
 
 squid_game()
