@@ -3,6 +3,8 @@ import flappy_bird_gym
 import numpy
 from dataclasses import dataclass
 import numpy as np
+
+from typing import List
 env = flappy_bird_gym.make("FlappyBird-v0")
 
 @dataclass
@@ -14,7 +16,7 @@ class Bird:
         return 1 if z > 0 else 0
 # karan = Bird([5, 8, 2])
 
-def play_one_game(bird: Bird) -> int:
+def play_one_game(bird: Bird, graphics=False) -> int:
     env.seed(555)
     obs = env.reset()
     score = 0
@@ -29,8 +31,9 @@ def play_one_game(bird: Bird) -> int:
 
         # Rendering the game:
         # (remove this two lines during training)
-        #env.render()
-        #time.sleep(1 / 60)  # FPS
+        if graphics:
+            env.render()
+            time.sleep(1 / 60)  # FPS
 
         # Checking if the player is still alive
         if done:
@@ -55,7 +58,6 @@ def breed(male_bird: Bird, female_bird: Bird) -> Bird:
 def gamma_ray_radition(bird: Bird) -> Bird:
     return Bird(bird.w + np.random.randn(3)*5)
 
-from typing import List
 
 def new_bird_generation(winning_birds: List[Bird]) -> List[Bird]:
     # 10000
@@ -77,7 +79,16 @@ def new_bird_generation(winning_birds: List[Bird]) -> List[Bird]:
 def get_winning_birds(birds: List[Bird], scores: np.ndarray) -> List[Bird]: 
     bs = [(b, s) for b, s in zip(birds, scores)]
     bs.sort(key=lambda x: x[1], reverse=True) # sort score descendingly
-    return bs[: 1000]
+    return [b for b, _ in bs[: 1000]]
 
+def find_strong_birds():
+    birds = [random_bird() for _ in range(10000)]
+    for generation in range(50):
+        print(f'Generation: {generation}')
+        winning_birds = squid_game(birds)
+        birds = new_bird_generation(winning_birds)
+    return birds[0]
 
-squid_game()
+# find_strong_birds()
+super_bird = Bird(np.array([-3.01968677e+01, -5.84914715e-01, -7.87463216e+02]))
+play_one_game(super_bird, graphics=True)
