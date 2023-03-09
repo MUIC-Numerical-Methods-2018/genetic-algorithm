@@ -39,6 +39,14 @@ def play_one_game(bird: Bird) -> int:
     env.close()
     return score
 
-humming = Bird([ -22.05717347,   21.23837877, -552.75222079])
-score = play_one_game(humming)
-print(humming, score)
+
+def random_bird():
+    return Bird((np.random.random(3)-0.5)*2000)
+
+def squid_game():
+    birds = [random_bird() for _ in range(2000)]
+    scores = [play_one_game(bird) for bird in birds]
+    best_bird = np.argmax(scores)
+    print(birds[best_bird], scores[best_bird])
+
+squid_game()
