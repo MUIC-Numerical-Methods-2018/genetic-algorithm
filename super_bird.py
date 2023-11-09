@@ -8,10 +8,24 @@ class Bird:
     a: float
     b: float
     c: float
+
     def action(self, obs):
         z = self.a + self.b*obs[0] + self.c*obs[1]
         return 1 if z > 0 else 0
 
+    def breed(self, bird) -> 'Bird':
+        return Bird(
+            a = (self.a+bird.a)/2,
+            b = (self.b+bird.b)/2,
+            c = (self.c+bird.c)/2,
+        )
+    
+    def mutate(self) -> 'Bird':
+        return Bird(
+            a = self.a + np.random.random(),
+            b = self.b + np.random.random(),
+            c = self.c + np.random.random()
+        )
 
 def play_game(bird: Bird, render: bool = True) -> int:
     env = flappy_bird_gym.make("FlappyBird-v0")
@@ -45,8 +59,8 @@ def random_birds(n) -> list[Bird]:
         
         Bird(
             a=(np.random.random()-0.5)*2000,
-            b=(np.random.rand()*-0.5)*2000,
-            c=(np.random.rand()*-0.5)*2000
+            b=(np.random.rand()-0.5)*2000,
+            c=(np.random.rand()-0.5)*2000
         )
         for _ in range(n)
     ]
